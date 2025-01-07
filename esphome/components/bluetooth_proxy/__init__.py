@@ -34,13 +34,10 @@ def validate_connections(config):
             raise cv.Invalid(
                 "Connections can only be used if the proxy is set to active"
             )
-    else:
-        if config[CONF_ACTIVE]:
-            conf = config.copy()
-            conf[CONF_CONNECTIONS] = [
-                CONNECTION_SCHEMA({}) for _ in range(MAX_CONNECTIONS)
-            ]
-            return conf
+    elif config[CONF_ACTIVE]:
+        conf = config.copy()
+        conf[CONF_CONNECTIONS] = [CONNECTION_SCHEMA({}) for _ in range(MAX_CONNECTIONS)]
+        return conf
     return config
 
 
@@ -79,5 +76,6 @@ async def to_code(config):
 
     if config.get(CONF_CACHE_SERVICES):
         add_idf_sdkconfig_option("CONFIG_BT_GATTC_CACHE_NVS_FLASH", True)
+    add_idf_sdkconfig_option("CONFIG_BT_GATTC_MAX_CACHE_CHAR", 100)
 
     cg.add_define("USE_BLUETOOTH_PROXY")
