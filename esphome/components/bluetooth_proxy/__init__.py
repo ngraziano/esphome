@@ -50,7 +50,7 @@ CONFIG_SCHEMA = cv.All(
             cv.SplitDefault(CONF_CACHE_SERVICES, esp32_idf=True): cv.All(
                 cv.only_with_esp_idf, cv.boolean
             ),
-            cv.SplitDefault(CONF_MAX_CHARACTERISTICS, esp32_idf=True): cv.All(
+            cv.SplitDefault(CONF_MAX_CHARACTERISTICS, esp32_idf=40): cv.All(
                 cv.only_with_esp_idf, cv.int_range(min=1, max=500)
             ),
             cv.Optional(CONF_CONNECTIONS): cv.All(
