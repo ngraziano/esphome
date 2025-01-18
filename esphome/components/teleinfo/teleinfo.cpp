@@ -1,10 +1,13 @@
 #include "teleinfo.h"
 #include "esphome/core/log.h"
+#include "esphome/core/helpers.h"
 
 namespace esphome {
 namespace teleinfo {
 
 static const char *const TAG = "teleinfo";
+static const char *const DATE_SUFFIX = ".DATE";
+static const std::size_t DATE_SUFFIX_LENGTH = 5;
 
 /* Helpers */
 static int get_field(char *dest, char *buf_start, char *buf_end, int sep, int max_len) {
@@ -172,17 +175,21 @@ void TeleInfo::loop() {
         /* Advance buf_finger to end of group */
         buf_finger += field_len + 1 + 1 + 1;
 
-        publish_value_(std::string(tag_), std::string(val_));
+        publish_value_(std::string(tag_), std::string(val_), std::string(timestamp_));
       }
       state_ = OFF;
       break;
   }
 }
-void TeleInfo::publish_value_(const std::string &tag, const std::string &val) {
+void TeleInfo::publish_value_(const std::string &tag, const std::string &val, const std::string &timestamp) {
   for (auto *element : teleinfo_listeners_) {
-    if (tag != element->tag)
-      continue;
-    element->publish_val(val);
+    if (tag == element->tag) {
+      element->publish_val(val);
+    } else if (tag.length() + DATE_SUFFIX_LENGTH == element->tag.length() && str_startswith(element->tag, tag) &&
+               str_endswith(element->tag, DATE_SUFFIX)) {
+      // Use the timestamp when tag name finish by DATE_SUFFIX
+      element->publish_val(timestamp);
+    }
   }
 }
 void TeleInfo::dump_config() {
