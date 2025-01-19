@@ -40,6 +40,8 @@ void TeleInfoDateTime::publish_val(const std::string &, const std::string &times
 
 void TeleInfoDateTime::dump_config() { LOG_DATETIME_DATETIME("  ", "Teleinfo DateTime", this); }
 
+void TeleInfoDateTime::control(const datetime::DateTimeCall &call) {}
+
 }  // namespace teleinfo
 }  // namespace esphome
 

@@ -13,6 +13,9 @@ class TeleInfoDateTime : public TeleInfoListener, public datetime::DateTimeEntit
   TeleInfoDateTime(const char *tag);
   void publish_val(const std::string &, const std::string &timestamp) override;
   void dump_config() override;
+
+ protected:
+  void control(const datetime::DateTimeCall &call) override;
 };
 }  // namespace teleinfo
 }  // namespace esphome
