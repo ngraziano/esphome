@@ -5,7 +5,7 @@ namespace teleinfo {
 
 static const char *const TAG = "teleinfo_sensor";
 TeleInfoSensor::TeleInfoSensor(const char *tag) { this->tag = std::string(tag); }
-void TeleInfoSensor::publish_val(const std::string &val) {
+void TeleInfoSensor::publish_val(const std::string &val, const std::string &) {
   auto newval = parse_number<float>(val).value_or(0.0f);
   publish_state(newval);
 }
